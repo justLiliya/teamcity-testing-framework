@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseModel{
-    private String username;
-    private String password;
-
+public class BuildType extends BaseModel {
+    private String id;
+    private String name;
+    private NewProjectDescription project;
+    private Steps steps;
 }

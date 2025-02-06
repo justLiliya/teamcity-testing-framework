@@ -2,15 +2,14 @@ package com.example.teamcity.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseModel{
-    private String username;
-    private String password;
-
+public class Steps {
+    private int count;
+    public List <Step> step;
 }

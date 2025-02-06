@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseModel{
-    private String username;
-    private String password;
-
+public class NewProjectDescription extends BaseModel {
+    private Project parentProject;
+    private String name;
+    private String id;
+    private Boolean copyAllAssociatedSettings;
 }

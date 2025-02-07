@@ -4,9 +4,10 @@ import com.example.teamcity.api.models.BaseModel;
 
 public interface CrudInterface {
     Object create(BaseModel model);
-    Object get(String id);
 
-    Object update(String id, Object object);
+    Object read(String id);
+
+    Object update(String id, BaseModel model);
 
     Object delete(String id);
 }

@@ -9,7 +9,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class UncheckedBase extends Request implements CrudInterface {
-    public UncheckedBase(RequestSpecification spec, Endpoint endpoint){
+    public UncheckedBase(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 
@@ -24,27 +24,27 @@ public class UncheckedBase extends Request implements CrudInterface {
 
     @Override
     public Response read(String id) {
-        return  RestAssured
+        return RestAssured
                 .given()
                 .spec(spec)
-                .get(endpoint.getUrl()+ "/id" + id);
+                .get(endpoint.getUrl() + "/" + id);
     }
 
     @Override
     public Response update(String id, BaseModel model) {
-        return  RestAssured
+        return RestAssured
                 .given()
                 .body(model)
                 .spec(spec)
-                .put(endpoint.getUrl()+ "/id" + id);
+                .put(endpoint.getUrl() + "/id" + id);
 
     }
 
     @Override
     public Response delete(String id) {
-        return  RestAssured
+        return RestAssured
                 .given()
                 .spec(spec)
-                .delete(endpoint.getUrl()+ "/id" + id);
+                .delete(endpoint.getUrl() + "/id" + id);
     }
 }

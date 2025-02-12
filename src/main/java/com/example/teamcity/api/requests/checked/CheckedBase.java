@@ -26,9 +26,9 @@ public final class CheckedBase<T extends BaseModel> extends Request implements C
     }
 
     @Override
-    public T read(String id) {
+    public T read(String some) {
         return (T) uncheckedBase
-                .read(id)
+                .read(some)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
                 .extract().as(endpoint.getModelClass());
     }

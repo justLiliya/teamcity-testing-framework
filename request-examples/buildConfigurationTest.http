@@ -5,8 +5,8 @@
 @password = admin
 
 ### Hardcoded test data
-@projectId = test_project_1
-@buildTypeId = test_build_type_1
+@projectId = test_project_44
+@buildTypeId = test_build_type_44
 
 GET http://{{user}}:{{password}}@{{host}}:{{port}}
 Content-Type: application/json

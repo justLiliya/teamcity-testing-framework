@@ -30,7 +30,7 @@ public class BuildTypeTest extends BaseTest {
 
         var createdBuildType = userCheckRequests.<BuildType>getRequest(BUILD_TYPES).read(testData.getBuildType().getId());
 
-        softy.assertEquals(testData.getBuildType().getName(), createdBuildType.getName(), "Build type name is not correct");
+        softy.assertEquals(testData.getBuildType(), createdBuildType, "Build type name is correct");
     }
 
     @Test(description = "User should not be able to create two build types with the same id", groups = {"Negative", "CRUD"})

@@ -6,13 +6,13 @@ import com.example.teamcity.api.models.Project;
 import com.example.teamcity.api.requests.CheckedRequests;
 import com.example.teamcity.api.requests.unchecked.UncheckedBase;
 import com.example.teamcity.api.spec.Specifications;
+import com.example.teamcity.api.spec.ValidationResponseSpecifications;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
 import static com.example.teamcity.api.enums.Endpoint.PROJECTS;
 import static com.example.teamcity.api.enums.Endpoint.USERS;
 import static com.example.teamcity.api.generators.RandomData.MAX_LENGTH;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 
 @Test(groups = {"Regression"})
@@ -39,8 +39,7 @@ public class ProjectTest extends BaseTest {
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS)
                 .create(createdProject)
-                .then().assertThat().statusCode(SC_BAD_REQUEST)
-                .body(Matchers.containsString(String.format("Project with this name already exists: %s", testData.getProject().getName())));
+                .then().spec(ValidationResponseSpecifications.checkProjectWithNameAlreadyExist(testData.getProject().getName()));
     }
 
     @Test(description = "User should not be able to create two project with the same id", groups = {"Negative", "CRUD"})
@@ -53,8 +52,7 @@ public class ProjectTest extends BaseTest {
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS)
                 .create(createdProject)
-                .then().assertThat().statusCode(SC_BAD_REQUEST)
-                .body(Matchers.containsString(String.format("Project ID \"%s\" is already used by another project", testData.getProject().getId())));
+                .then().spec(ValidationResponseSpecifications.checkProjectWithIdAlreadyExist(testData.getProject().getId()));
     }
 
     @Test(description = "User should not be able to create project with too long id", groups = {"Negative", "CRUD"})
@@ -66,8 +64,7 @@ public class ProjectTest extends BaseTest {
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS)
                 .create(project)
-                .then().assertThat().statusCode(SC_INTERNAL_SERVER_ERROR) // здесь баг, должно быть 400 вместо 500
-                .body(Matchers.containsString(String.format("Project ID \"%s\" is invalid: it is 226 characters long while the maximum length is 225. ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters).", testData.getProject().getId())));
+                .then().spec(ValidationResponseSpecifications.checkProjectWithIdWithTooLongId(testData.getProject().getId()));
     }
 
     @Test(description = "User should not be able to create project with empty id", groups = {"Negative", "CRUD"})
@@ -83,22 +80,19 @@ public class ProjectTest extends BaseTest {
                 .body(Matchers.containsString("Project ID must not be empty."));
     }
 
-    @Test(description = "User should not be able to create project with empty id", groups = {"Negative", "CRUD"})
+    @Test(description = "User should not be able to create project starts with non latin letter", groups = {"Negative", "CRUD"})
     public void userCreatesProjectWithIdStartWithNonLatinLetterUnSuccess() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
-
         Project project = testData.getProject();
         String nonLatinLetter = "Ю";
         project.setId(RandomData.getString(nonLatinLetter, 10));
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS)
                 .create(project)
-                .then().assertThat().statusCode(SC_INTERNAL_SERVER_ERROR) // здесь баг, должно быть 400 вместо 500
-                .body(Matchers.containsString(String.format("Project ID \"%s\" is invalid: contains non-latin letter '%s'. ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters).", testData.getProject().getId(), nonLatinLetter)));
-
+                .then().spec(ValidationResponseSpecifications.checkProjectWithIdWithNameStartWithNonLatinLetter(testData.getProject().getId(), nonLatinLetter));
     }
 
-    @Test(description = "User should not be able to create project with empty id", groups = {"Negative", "CRUD"})
+    @Test(description = "User should not be able to create project contains non latin letter", groups = {"Negative", "CRUD"})
     public void userCreatesProjectWithIdContainsNonLatinLetterUnSuccess() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
@@ -108,7 +102,6 @@ public class ProjectTest extends BaseTest {
 
         new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS)
                 .create(project)
-                .then().assertThat().statusCode(SC_INTERNAL_SERVER_ERROR) // здесь баг, должно быть 400 вместо 500
-                .body(Matchers.containsString(String.format("Project ID \"%s\" is invalid: contains non-latin letter '%s'. ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters).", testData.getProject().getId(), nonLatinLetter)));
+                .then().spec(ValidationResponseSpecifications.checkProjectWithIdWithNameStartWithNonLatinLetter(testData.getProject().getId(), nonLatinLetter));
     }
 }

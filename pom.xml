@@ -21,6 +21,7 @@
         <selenide.version>7.4.3</selenide.version>
         <swagger-coverage-version>1.5.0</swagger-coverage-version>
         <allure.version>2.27.0</allure.version>
+        <wiremock.version>3.9.1</wiremock.version>
     </properties>
 
     <dependencies>
@@ -87,6 +88,18 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
             <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

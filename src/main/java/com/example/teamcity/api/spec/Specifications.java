@@ -39,5 +39,16 @@ public class Specifications {
         return requestBuilder.build();
     }
 
+    public static Specifications getSpec() {
+        if (spec == null) {
+            spec = new Specifications();
+        }
+        return spec;
+    }
 
+    public RequestSpecification mockSpec() {
+        return reqBuilder()
+                .setBaseUri("http://localhost:8081")
+                .build();
+    }
 }
